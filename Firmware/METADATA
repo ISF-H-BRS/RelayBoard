@@ -1,0 +1,5 @@
+BoardName = RelayBoard
+HardwareVersion = 2.0
+FirmwareVersion = 2.0
+Packager = ISF
+ReleaseDate = 20240525

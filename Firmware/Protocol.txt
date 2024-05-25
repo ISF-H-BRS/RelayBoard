@@ -1,0 +1,132 @@
+ISF RelayBoard - Communication Protocol
+=======================================
+
+Every transmission is ASCII-encoded and terminated by CR+LF (aka "\r\n").
+
+Command Format
+--------------
+
+<COMMAND_TAG> [index] [argument1,argument2,...]
+
+
+Response Format
+---------------
+
+<RESPONSE_TAG> [value1,value2,...]
+or
+<ERROR> code
+
+
+Error Codes
+-----------
+
+DATA_OVERFLOW     Maximum transmission size of 100 characters exceeded
+UNKNOWN_COMMAND   Command tag not recognized
+MISSING_ARGUMENT  Insufficient number of arguments provided
+INVALID_ARGUMENT  Invalid argument provided
+ERASE_FAILED      Unable to erase flash memory page
+WRITE_FAILED      Unable to write to flash memory
+
+
+Commands
+--------
+
+RESET
+Description: Resets fault and state masks
+Index:       None
+Arguments:   None
+Example:     <RESET>
+Response:    <OK>
+
+GET_FAULT_MASK
+Description: Returns bitmask (hex format) indicating overvoltage/-current
+Index:       None
+Arguments:   None
+Example:     <GET_FAULT_MASK>
+Response:    <FAULT_MASK> 0x0000
+
+SET_RELAY_STATE
+Description: Sets state of specified relay
+Index:       0-15
+Arguments:   New state (ON or OFF)
+Examples:    <SET_RELAY_STATE> 0 ON
+             <SET_RELAY_STATE> 0 OFF
+Response:    <OK>
+
+GET_RELAY_STATE
+Description: Returns state of specified relay
+Index:       0-15
+Arguments:   None
+Example:     <GET_RELAY_STATE> 0
+Response:    <RELAY_STATE> OFF
+
+SET_STATE_MASK
+Description: Sets bitmask describing relay states
+Index:       None
+Arguments:   State mask (hex/decimal format)
+Examples:    <SET_STATE_MASK> 0xaaaa
+             <SET_STATE_MASK> 43690
+Response:    <OK>
+
+GET_STATE_MASK
+Description: Returns bitmask (hex format) describing relay states
+Index:       None
+Arguments:   None
+Example:     <GET_STATE_MASK>
+Response:    <STATE_MASK> 0xaaaa
+
+GET_RELAY_POWER
+Description: Returns relay voltage in V and current in A
+Index:       0-15
+Arguments:   None
+Example:     <GET_RELAY_POWER> 0
+Response:    <RELAY_POWER> 12.34,1.234
+
+SET_POWER_LIMIT
+Description: Sets power limits for specified relay (max. 32 V @ 2 A)
+Index:       0-15
+Arguments:   Voltage limit in V, current limit in A
+Example:     <SET_POWER_LIMIT> 0 16.00,1.000
+Response:    <OK>
+
+GET_POWER_LIMIT
+Description: Returns currently set voltage limit in V and current limit in A
+Index:       0-15
+Arguments:   None
+Example:     <GET_POWER_LIMIT> 0
+Response:    <POWER_LIMIT> 16.00,1.000
+
+SAVE_POWER_LIMITS
+Description: Writes currently set limits to persistent flash memory
+Index:       None
+Arguments:   None
+Example:     <SAVE_POWER_LIMITS>
+Response:    <OK>
+
+GET_HARDWARE_VERSION
+Description: Returns hardware version
+Index:       None
+Arguments:   None
+Example:     <GET_HARDWARE_VERSION>
+Response:    <HARDWARE_VERSION> 1.0
+
+GET_FIRMWARE_VERSION
+Description: Returns firmware version
+Index:       None
+Arguments:   None
+Example:     <GET_FIRMWARE_VERSION>
+Response:    <FIRMWARE_VERSION> 1.0
+
+GET_SERIAL_NUMBER
+Description: Returns device serial number
+Index:       None
+Arguments:   None
+Example:     <GET_SERIAL_NUMBER>
+Response:    <SERIAL_NUMBER> 207733794E4E
+
+GET_BUILD_TIMESTAMP
+Description: Returns firmware build time as Unix time
+Index:       None
+Arguments:   None
+Example:     <GET_BUILD_TIMESTAMP>
+Response:    <BUILD_TIMESTAMP> 1618493589
